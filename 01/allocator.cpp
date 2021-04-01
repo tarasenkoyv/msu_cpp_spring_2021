@@ -53,12 +53,14 @@ size_t Allocator::get_max_size() {
 }
 
 char* Allocator::occupy(size_t size) {
+	if (size == 0) return nullptr;
+
 	assert(occupied_size_ + size <= max_size_);
 
 	occupied_size_ += size;
 	current_ptr += size;
 
-	return current_ptr;
+	return current_ptr - 1;
 }
 
 void Allocator::init(size_t size) {
