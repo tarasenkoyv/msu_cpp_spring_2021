@@ -40,7 +40,6 @@ char* Allocator::Alloc(size_t size) {
 }
 
 void Allocator::Reset() {
-	max_size_ = 0;
 	occupied_size_ = 0;
 	current_ptr = start_ptr;
 }
