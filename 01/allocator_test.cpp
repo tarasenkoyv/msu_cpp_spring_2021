@@ -3,138 +3,74 @@
 
 #include "allocator.hpp"
 
-void Test1();
-void Test2();
-void Test3();
-void Test4();
-void Test5();
-void Test6();
-void Test7();
+void AllocWithoutMakeAllocatorCall();
+void AllocMemorySizeExceedingMaxSizeTest();
+void ReAllocMemoryTest();
+void CheckBoundaryConditionsTest();
 
 int main()
 {
-    Test1();
-    Test2();
-    Test3();
-    Test4();
-    Test5();
-    // Testing a class destructor and singleton.
-    Test6();
-    Test7();
+    AllocWithoutMakeAllocatorCall();
+    AllocMemorySizeExceedingMaxSizeTest();
+    ReAllocMemoryTest();
+    CheckBoundaryConditionsTest();
+
+    std::cout << "Success!" << std:: endl;
 
     return 0;
 }
 
 /**
 * Allocation of memory in the absence of initialization,
-* when the function MakeAllocator is not called.
+* when the function makeAllocator is not called.
 */
-void Test1() {
-    Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
-
-    char* new_ptr = static_cast<char*>(allocator->Alloc(1));
-    assert(new_ptr == nullptr);
-    std::cout << "TEST 1: success." << std::endl;
-}
-
-/**
-* Allocation of memory size exceeding unsigned int size.
-* As a result of the Test2 call, a bad_alloc exception should be thrown.
-*/
-void Test2() {
-    Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
-
-    try {
-        allocator->MakeAllocator(1);
-        allocator->MakeAllocator(10000000000000);
-        std::cout << "TEST 2: failed." << std::endl;
-    }
-    catch (std::bad_alloc const&) {
-        std::cout << "TEST 2: success." << std::endl;
-
-    }
+void AllocWithoutMakeAllocatorCall() {
+    Allocator* allocator = new Allocator();
+    
+    assert(allocator->alloc(1) == nullptr);
 }
 
 /**
 * Allocation of memory size exceeding the maximum size of the Allocator instance.
 */
-void Test3() {
-    Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
+void AllocMemorySizeExceedingMaxSizeTest() {
+    Allocator* allocator = new Allocator();
 
-    size_t max_size = allocator->get_max_size();
-    if (max_size > 6) {
-        allocator->Alloc(max_size - 6);
-    }
-    char* new_ptr = static_cast<char*>(allocator->Alloc(6));
-    assert(new_ptr == nullptr);
-    std::cout << "TEST 3: success." << std::endl;
+    allocator->makeAllocator(5);
+    assert(allocator->alloc(6) == nullptr);
 }
 /**
-* Increase memory with the MakeAllocator function.
+* Re-allocation memory with the makeAllocator function.
 */
-void Test4() {
-    delete(Allocator::GetInstance());
-    Allocator* allocator = Allocator::GetInstance();
+void ReAllocMemoryTest() {
+    Allocator* allocator = new Allocator();
 
-    allocator->MakeAllocator(5);
-    allocator->MakeAllocator(5);
-    assert(allocator->get_max_size() == 10);
-    std::cout << "TEST 4: success." << std::endl;
+    allocator->makeAllocator(5);
+    assert(allocator->alloc(1) != nullptr);
+    assert(allocator->get_offset() == 1);
+    allocator->makeAllocator(5);
+    assert(allocator->get_max_size() == 5);
+    assert(allocator->get_offset() == 0);
 }
 /**
 * Testing Allocator variable values for correctness.
 */
-void Test5() {
-    delete(Allocator::GetInstance());
-    Allocator* allocator = Allocator::GetInstance();
+void CheckBoundaryConditionsTest() {
+    Allocator* allocator = new Allocator();
 
-    allocator->MakeAllocator(5);
-    allocator->MakeAllocator(5);
-    allocator->Alloc(5);
-    assert(allocator->get_occupied_size() == 5);
+    allocator->makeAllocator(10);
     assert(allocator->get_max_size() == 10);
-    std::cout << "TEST 5: success." << std::endl;
-}
-/**
-* Testing a class destructor and singleton.
-*/
-void Test6() {
-    Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
+    assert(allocator->get_offset() == 0);
 
-    allocator->MakeAllocator(5);
-    allocator->Alloc(5);
+    assert(allocator->alloc(10) != nullptr);
+    assert(allocator->get_offset() == 10);
 
-    delete(allocator);
+    assert(allocator->alloc(1) == nullptr);
+    assert(allocator->get_offset() == 10);
+    assert(allocator->get_max_size() == 10);
 
-    allocator = Allocator::GetInstance();
-    assert(allocator->get_occupied_size() == 0);
-    assert(allocator->get_max_size() == 0);
-
-    std::cout << "TEST 6: success." << std::endl;
-}
-void Test7() {
-    char* new_ptr = nullptr;
-    delete(Allocator::GetInstance());
-    Allocator* allocator = Allocator::GetInstance();
-    
-    allocator->MakeAllocator(5);
-    assert(allocator->Alloc(4) - allocator->Alloc(1) == -4);
-
-    new_ptr = static_cast<char*>(allocator->Alloc(1));
-
-    assert(new_ptr == nullptr);
-    assert(allocator->get_occupied_size() == 5);
-
-    allocator->Reset();
-    new_ptr = static_cast<char*>(allocator->Alloc(1));
-    assert(new_ptr != nullptr);
-    assert(allocator->Alloc(1) != nullptr);
-    assert(allocator->Alloc(4) == nullptr);
-    assert(allocator->Alloc(1) != nullptr);
-
-    std::cout << "TEST 7: success." << std::endl;
+    allocator->reset();
+    assert(allocator->get_offset() == 0);
+    assert(allocator->get_max_size() == 10);
+    assert(allocator->alloc(10) != nullptr);
 }
