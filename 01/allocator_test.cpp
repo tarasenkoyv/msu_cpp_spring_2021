@@ -47,10 +47,10 @@ void Test2() {
     try {
         allocator->MakeAllocator(1);
         allocator->MakeAllocator(10000000000000000000);
-        std::cout << "TEST 2: faild: " << std::endl;
+        std::cout << "TEST 2: failed." << std::endl;
     }
     catch (std::bad_alloc const&) {
-        std::cout << "TEST 2: success:" << std::endl;
+        std::cout << "TEST 2: success." << std::endl;
 
     }
 }
