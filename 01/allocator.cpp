@@ -58,9 +58,11 @@ char* Allocator::occupy(size_t size) {
 	assert(occupied_size_ + size <= max_size_);
 
 	occupied_size_ += size;
+
+	char* new_ptr = current_ptr;
 	current_ptr += size;
 
-	return current_ptr - 1;
+	return new_ptr;
 }
 
 void Allocator::init(size_t size) {
