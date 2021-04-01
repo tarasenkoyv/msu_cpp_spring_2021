@@ -48,7 +48,7 @@ void Test2() {
 
     try {
         allocator->MakeAllocator(1);
-        allocator->MakeAllocator(10000000000000000000);
+        allocator->MakeAllocator(10000000000000);
         std::cout << "TEST 2: failed." << std::endl;
     }
     catch (std::bad_alloc const&) {
@@ -117,16 +117,24 @@ void Test6() {
     std::cout << "TEST 6: success." << std::endl;
 }
 void Test7() {
+    char* new_ptr = nullptr;
     delete(Allocator::GetInstance());
     Allocator* allocator = Allocator::GetInstance();
     
     allocator->MakeAllocator(5);
-    allocator->Alloc(1);
-    allocator->Alloc(4);
-    char* new_ptr = static_cast<char*>(allocator->Alloc(1));
+    assert(allocator->Alloc(4) - allocator->Alloc(1) == -4);
+
+    new_ptr = static_cast<char*>(allocator->Alloc(1));
 
     assert(new_ptr == nullptr);
     assert(allocator->get_occupied_size() == 5);
+
+    allocator->Reset();
+    new_ptr = static_cast<char*>(allocator->Alloc(1));
+    assert(new_ptr != nullptr);
+    assert(allocator->Alloc(1) != nullptr);
+    assert(allocator->Alloc(4) == nullptr);
+    assert(allocator->Alloc(1) != nullptr);
 
     std::cout << "TEST 7: success." << std::endl;
 }

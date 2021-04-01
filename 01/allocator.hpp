@@ -23,10 +23,10 @@ private:
 	// The total number of occupied bytes.
 	size_t occupied_size_;
 
-	char* start_ptr;
-	char* current_ptr;
+	char* start_ptr_;
+	char* current_ptr_;
 
-	char* occupy(size_t size);
-	void init(size_t size);
-	void grow(size_t size);
+	char* Occupy(size_t size);
+	void Init(size_t size);
+	void Grow(size_t size);
 };
