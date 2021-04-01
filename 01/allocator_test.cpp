@@ -58,6 +58,11 @@ void ReAllocMemoryTest() {
 void CheckBoundaryConditionsTest() {
     Allocator* allocator = new Allocator();
 
+    allocator->makeAllocator(0);
+    assert(allocator->get_max_size() == 0);
+    assert(allocator->get_offset() == 0);
+    assert(allocator->alloc(10) == nullptr);
+
     allocator->makeAllocator(10);
     assert(allocator->get_max_size() == 10);
     assert(allocator->get_offset() == 0);
