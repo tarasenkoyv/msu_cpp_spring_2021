@@ -28,6 +28,8 @@ void AllocWithoutMakeAllocatorCall() {
     Allocator* allocator = new Allocator();
     
     assert(allocator->alloc(1) == nullptr);
+
+    delete allocator;
 }
 
 /**
@@ -38,6 +40,8 @@ void AllocMemorySizeExceedingMaxSizeTest() {
 
     allocator->makeAllocator(5);
     assert(allocator->alloc(6) == nullptr);
+
+    delete allocator;
 }
 /**
 * Re-allocation memory with the makeAllocator function.
@@ -51,6 +55,8 @@ void ReAllocMemoryTest() {
     allocator->makeAllocator(5);
     assert(allocator->get_max_size() == 5);
     assert(allocator->get_offset() == 0);
+
+    delete allocator;
 }
 /**
 * Testing Allocator variable values for correctness.
@@ -78,4 +84,6 @@ void CheckBoundaryConditionsTest() {
     assert(allocator->get_offset() == 0);
     assert(allocator->get_max_size() == 10);
     assert(allocator->alloc(10) != nullptr);
+
+    delete allocator;
 }
