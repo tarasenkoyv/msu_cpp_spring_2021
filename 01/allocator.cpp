@@ -84,6 +84,7 @@ void Allocator::grow(size_t size) {
 	new_start_ptr = static_cast<char*>(std::realloc(start_ptr, new_size));
 	if (new_start_ptr != nullptr) {
 		start_ptr = new_start_ptr;
+		current_ptr = start_ptr + occupied_size_;
 		max_size_ = new_size;
 	}
 	else {
