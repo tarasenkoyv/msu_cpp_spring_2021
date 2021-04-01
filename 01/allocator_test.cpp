@@ -3,29 +3,31 @@
 
 #include "allocator.hpp"
 
-void test_1();
-void test_2();
-void test_3();
-void test_4();
-void test_5();
-void test_6();
+void Test1();
+void Test2();
+void Test3();
+void Test4();
+void Test5();
+void Test6();
 
 int main()
 {
-    test_1();
-    test_2();
-    test_3();
-    test_4();
-    test_5();
+    Test1();
+    Test2();
+    Test3();
+    Test4();
+    Test5();
     // Testing a class destructor and singleton.
-    test_6();
+    Test6();
+
+    return 0;
 }
 
 /**
 * Allocation of memory in the absence of initialization,
 * when the function MakeAllocator is not called.
 */
-void test_1() {
+void Test1() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
@@ -36,9 +38,9 @@ void test_1() {
 
 /**
 * Allocation of memory size exceeding unsigned int size.
-* As a result of the test_2 call, a bad_alloc exception should be thrown.
+* As a result of the Test2 call, a bad_alloc exception should be thrown.
 */
-void test_2() {
+void Test2() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
@@ -56,7 +58,7 @@ void test_2() {
 /**
 * Allocation of memory size exceeding the maximum size of the Allocator instance.
 */
-void test_3() {
+void Test3() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
@@ -68,7 +70,7 @@ void test_3() {
 /**
 * Increase memory with the MakeAllocator function.
 */
-void test_4() {
+void Test4() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
@@ -80,7 +82,7 @@ void test_4() {
 /**
 * Testing Allocator variable values for correctness.
 */
-void test_5() {
+void Test5() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
@@ -94,7 +96,7 @@ void test_5() {
 /**
 * Testing a class destructor and singleton.
 */
-void test_6() {
+void Test6() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
