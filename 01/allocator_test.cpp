@@ -9,6 +9,7 @@ void Test3();
 void Test4();
 void Test5();
 void Test6();
+void Test7();
 
 int main()
 {
@@ -19,6 +20,7 @@ int main()
     Test5();
     // Testing a class destructor and singleton.
     Test6();
+    Test7();
 
     return 0;
 }
@@ -62,7 +64,10 @@ void Test3() {
     Allocator* allocator = Allocator::GetInstance();
     allocator->Reset();
 
-    allocator->MakeAllocator(5);
+    size_t max_size = allocator->get_max_size();
+    if (max_size > 6) {
+        allocator->Alloc(max_size - 6);
+    }
     char* new_ptr = static_cast<char*>(allocator->Alloc(6));
     assert(new_ptr == nullptr);
     std::cout << "TEST 3: success." << std::endl;
@@ -71,8 +76,8 @@ void Test3() {
 * Increase memory with the MakeAllocator function.
 */
 void Test4() {
+    delete(Allocator::GetInstance());
     Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
 
     allocator->MakeAllocator(5);
     allocator->MakeAllocator(5);
@@ -83,8 +88,8 @@ void Test4() {
 * Testing Allocator variable values for correctness.
 */
 void Test5() {
+    delete(Allocator::GetInstance());
     Allocator* allocator = Allocator::GetInstance();
-    allocator->Reset();
 
     allocator->MakeAllocator(5);
     allocator->MakeAllocator(5);
@@ -110,4 +115,18 @@ void Test6() {
     assert(allocator->get_max_size() == 0);
 
     std::cout << "TEST 6: success." << std::endl;
+}
+void Test7() {
+    delete(Allocator::GetInstance());
+    Allocator* allocator = Allocator::GetInstance();
+    
+    allocator->MakeAllocator(5);
+    allocator->Alloc(1);
+    allocator->Alloc(4);
+    char* new_ptr = static_cast<char*>(allocator->Alloc(1));
+
+    assert(new_ptr == nullptr);
+    assert(allocator->get_occupied_size() == 5);
+
+    std::cout << "TEST 7: success." << std::endl;
 }
