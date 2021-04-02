@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-std=c++17 -Wall -Wextra
+FLAGS=-std=c++17 -Wall -Werror -Wextra
 
 all: test
 

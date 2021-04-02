@@ -40,6 +40,7 @@ private:
     StrTokenCallback str_token_callback_ = nullptr;
     DigitTokenCallback digit_token_callback_ = nullptr;
     std::vector<std::string> tokens_;
+    // Tokens after processing with str_token_callback_ and digit_token_callback_.
     std::vector<std::string> out_tokens_;
     std::string text_after_start_callback_;
     std::string text_after_parse_;
@@ -55,5 +56,9 @@ private:
 
     void EndHandler(const std::string &text, std::string &out_text);
 
-    bool IsDigit(const std::string &token);
+    bool IsUnsignedInt(const std::string &token, unsigned int& out_digit);
+
+    void ProcessTokens();
+
+    void ReCreateTextAfterParsing();
 };

@@ -11,18 +11,26 @@ TokenParser::TokenParser() {
 }
 
 void TokenParser::Parse(const std::string &text, const std::string &delimiters) {
-    text_after_start_callback_ = std::string(text);
     StartHandler(text, text_after_start_callback_);
 
-    tokens_.clear();
     Tokenize(text_after_start_callback_, delimiters);
 
+    ProcessTokens();
+
+    ReCreateTextAfterParsing();
+
+    EndHandler(text_after_parse_, text_after_end_callback_);
+}
+
+void TokenParser::ProcessTokens() {
     out_tokens_.clear();
     for (size_t i = 0; i < tokens_.size(); i++) {
         std::string token = tokens_[i];
-        if (IsDigit(token)) {
+
+        unsigned int out_digit;
+        if (IsUnsignedInt(token, out_digit)) {
             std::string out_str = token;
-            DigitTokenHandler(std::stoul(token), out_str);
+            DigitTokenHandler(out_digit, out_str);
             out_tokens_.push_back(out_str);
         }
         else {
@@ -31,24 +39,26 @@ void TokenParser::Parse(const std::string &text, const std::string &delimiters) 
             out_tokens_.push_back(out_str);
         }
     }
+}
 
+/*
+* When re-creating, all separators are replaced by spaces.
+*/
+void TokenParser::ReCreateTextAfterParsing() {
     text_after_parse_ = "";
     for (size_t i = 0; i < out_tokens_.size(); i++) {
         text_after_parse_ += out_tokens_[i];
         if (i != out_tokens_.size() - 1) {
-            text_after_parse_+= " ";
+            text_after_parse_ += " ";
         }
     }
-
-    text_after_end_callback_ = std::string(text_after_parse_);
-    EndHandler(text_after_parse_, text_after_end_callback_);
 }
 
-inline bool TokenParser::IsDigit(const std::string &token) {
+inline bool TokenParser::IsUnsignedInt(const std::string &token, unsigned int &out_digit) {
     std::regex isDigit{ R"(\d+)" };
     if (std::regex_match(token, isDigit)) {
         try {
-            std::stoul(token);
+            out_digit = std::stoul(token);
             return true;
         }
         catch (const std::exception &e) {
@@ -106,12 +116,16 @@ void TokenParser::StrTokenHandler(const std::string &str, std::string &out_str) 
 }
 
 void TokenParser::StartHandler(const std::string &text, std::string &out_text) {
+    out_text = std::string(text);
+
     if (start_callback_ == nullptr) return;
      
     start_callback_(text, out_text);
 }
 
 void TokenParser::EndHandler(const std::string &text, std::string &out_text) {
+    out_text = std::string(text);
+
     if (end_callback_ == nullptr) return;
 
     end_callback_(text, out_text);
