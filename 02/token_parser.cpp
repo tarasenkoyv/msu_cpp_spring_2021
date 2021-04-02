@@ -10,7 +10,7 @@ TokenParser::TokenParser() {
     str_token_callback_ = nullptr;
 }
 
-void TokenParser::Parse(const std::string& text, const std::string& delimiters) {
+void TokenParser::Parse(const std::string &text, const std::string &delimiters) {
     text_after_start_callback_ = std::string(text);
     StartHandler(text, text_after_start_callback_);
 
@@ -44,7 +44,7 @@ void TokenParser::Parse(const std::string& text, const std::string& delimiters) 
     EndHandler(text_after_parse_, text_after_end_callback_);
 }
 
-inline bool TokenParser::IsDigit(const std::string& token) {
+inline bool TokenParser::IsDigit(const std::string &token) {
     std::regex isDigit{ R"(\d+)" };
     if (std::regex_match(token, isDigit)) {
         try {
@@ -58,7 +58,7 @@ inline bool TokenParser::IsDigit(const std::string& token) {
     return false;
 }
 
-void TokenParser::Tokenize(const std::string& str, const std::string& delimiters)
+void TokenParser::Tokenize(const std::string &str, const std::string &delimiters)
 {
     tokens_.clear();
     // Skip delimiters at beginning.
@@ -93,25 +93,25 @@ void TokenParser::SetStrTokenCallback(StrTokenCallback callback) {
     str_token_callback_ = callback;
 }
 
-void TokenParser::DigitTokenHandler(unsigned int digit, std::string& out_str) {
+void TokenParser::DigitTokenHandler(unsigned int digit, std::string &out_str) {
     if (digit_token_callback_ == nullptr) return;
 
     digit_token_callback_(digit, out_str);
 }
 
-void TokenParser::StrTokenHandler(const std::string &str, std::string& out_str) {
+void TokenParser::StrTokenHandler(const std::string &str, std::string &out_str) {
     if (str_token_callback_ == nullptr) return;
     
     str_token_callback_(str, out_str);
 }
 
-void TokenParser::StartHandler(const std::string& text, std::string& out_text) {
+void TokenParser::StartHandler(const std::string &text, std::string &out_text) {
     if (start_callback_ == nullptr) return;
      
     start_callback_(text, out_text);
 }
 
-void TokenParser::EndHandler(const std::string& text, std::string& out_text) {
+void TokenParser::EndHandler(const std::string &text, std::string &out_text) {
     if (end_callback_ == nullptr) return;
 
     end_callback_(text, out_text);

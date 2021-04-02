@@ -5,17 +5,17 @@
 #include <string>
 #include <vector>
 
-using DigitTokenCallback = std::function<void(unsigned int d, std::string& out_str)>;
-using StrTokenCallback = std::function<void(const std::string& str, std::string& out_str)>;
-using StartCallback = std::function<void(const std::string& text, std::string& out_text)>;
-using EndCallback = std::function<void(const std::string& text, std::string& out_text)>;
+using DigitTokenCallback = std::function<void(unsigned int d, std::string &out_str)>;
+using StrTokenCallback = std::function<void(const std::string &str, std::string &out_str)>;
+using StartCallback = std::function<void(const std::string &text, std::string &out_text)>;
+using EndCallback = std::function<void(const std::string &text, std::string &out_text)>;
 
 class TokenParser
 {
 public:
     TokenParser();
 
-    void Parse(const std::string& text, const std::string& delimiters = " ");
+    void Parse(const std::string &text, const std::string &delimiters = " ");
 
     // Setting a callback function before starting parsing.
     void SetStartCallback(StartCallback callback);
@@ -45,15 +45,15 @@ private:
     std::string text_after_parse_;
     std::string text_after_end_callback_;
 
-    void Tokenize(const std::string& str, const std::string& delimiters = " ");
+    void Tokenize(const std::string &str, const std::string &delimiters = " ");
 
-    void DigitTokenHandler(unsigned int digit, std::string& out_str);
+    void DigitTokenHandler(unsigned int digit, std::string &out_str);
 
-    void StrTokenHandler(const std::string& str, std::string& out_str);
+    void StrTokenHandler(const std::string &str, std::string &out_str);
 
-    void StartHandler(const std::string& text, std::string& out_text);
+    void StartHandler(const std::string &text, std::string &out_text);
 
-    void EndHandler(const std::string& text, std::string& out_text);
+    void EndHandler(const std::string &text, std::string &out_text);
 
-    bool IsDigit(const std::string& token);
+    bool IsDigit(const std::string &token);
 };
