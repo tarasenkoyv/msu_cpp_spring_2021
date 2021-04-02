@@ -42,9 +42,7 @@ void TextAfterStartCallbackTest() {
     TokenParser parser;
     
     auto start_callback = [](const std::string& text, std::string& out_text) -> void {
-        out_text = "{ ";
-        out_text.append(text);
-        out_text.append(" }");
+        out_text = "{ " + text + " }";
     };
     parser.SetStartCallback(start_callback);
 
@@ -59,9 +57,7 @@ void TextAfterEndCallbackTest() {
     TokenParser parser;
 
     auto end_callback = [](const std::string& text, std::string& out_text) -> void {
-        out_text = "{ ";
-        out_text.append(text);
-        out_text.append(" }");
+        out_text = "{ " + text + " }";
     };
     parser.SetEndCallback(end_callback);
 
@@ -93,9 +89,7 @@ void StrTokenCallbackTest() {
     TokenParser parser;
 
     auto str_token_callback = [](const std::string& str, std::string& out_str) -> void {
-        out_str = "{ ";
-        out_str.append(str);
-        out_str.append(" }");
+        out_str = "{ " + str + " }";
     };
     parser.SetStrTokenCallback(str_token_callback);
 
@@ -110,9 +104,7 @@ void AllCallbackTest() {
     TokenParser parser;
 
     auto str_token_callback = [](const std::string& str, std::string& out_str) -> void {
-        out_str = "<";
-        out_str.append(str);
-        out_str.append(">");
+        out_str = "<" + str + ">";
     };
     auto digit_token_callback = [](unsigned int d, std::string& out_str) -> void {
         if (d % 5 == 0) {
@@ -120,14 +112,10 @@ void AllCallbackTest() {
         }
     };
     auto end_callback = [](const std::string& text, std::string& out_text) -> void {
-        out_text = "[ ";
-        out_text.append(text);
-        out_text.append(" ]");
+        out_text = "[ " + text + " ]";
     };
     auto start_callback = [](const std::string& text, std::string& out_text) -> void {
-        out_text = "{ ";
-        out_text.append(text);
-        out_text.append(" }");
+        out_text = "{ " + text + " }";
     };
 
     parser.SetStartCallback(start_callback);
@@ -148,9 +136,7 @@ void ParseDigit_UINT_MAX_Test() {
     TokenParser parser;
 
     auto digit_token_callback = [](unsigned int d, std::string& out_str) -> void {
-        out_str = "{";
-        out_str.append(std::to_string(d));
-        out_str.append("}");
+        out_str = "{" + std::to_string(d) + "}";
     };
     parser.SetDigitTokenCallback(digit_token_callback);
 

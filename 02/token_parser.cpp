@@ -34,9 +34,9 @@ void TokenParser::Parse(const std::string &text, const std::string &delimiters) 
 
     text_after_parse_ = "";
     for (size_t i = 0; i < out_tokens_.size(); i++) {
-        text_after_parse_.append(out_tokens_[i]);
+        text_after_parse_ += out_tokens_[i];
         if (i != out_tokens_.size() - 1) {
-            text_after_parse_.append(" ");
+            text_after_parse_+= " ";
         }
     }
 
