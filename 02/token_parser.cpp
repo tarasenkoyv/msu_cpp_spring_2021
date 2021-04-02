@@ -22,7 +22,7 @@ void TokenParser::Parse(const std::string& text, const std::string& delimiters) 
         std::string token = tokens_[i];
         if (IsDigit(token)) {
             std::string out_str = token;
-            DigitTokenHandler(std::stoi(token), out_str);
+            DigitTokenHandler(std::stoul(token), out_str);
             out_tokens_.push_back(out_str);
         }
         else {
@@ -46,7 +46,17 @@ void TokenParser::Parse(const std::string& text, const std::string& delimiters) 
 
 inline bool TokenParser::IsDigit(const std::string& token) {
     std::regex isDigit{ R"(\d+)" };
-    return (std::regex_match(token, isDigit));
+    if (std::regex_match(token, isDigit)) {
+        try {
+            size_t pos;
+            std::stoul(token, &pos);
+            return pos == token.size();
+        }
+        catch (const std::exception &e) {
+            return false;
+        }
+    }
+    return false;
 }
 
 void TokenParser::Tokenize(const std::string& str, const std::string& delimiters)

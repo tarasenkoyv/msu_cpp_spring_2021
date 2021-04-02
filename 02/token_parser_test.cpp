@@ -10,6 +10,7 @@ void TextAfterEndCallbackTest();
 void DigitTokenCallbackTest();
 void StrTokenCallbackTest();
 void AllCallbackTest();
+void ParseDigit_UINT_MAX_Test();
 
 int main()
 {
@@ -19,6 +20,7 @@ int main()
     DigitTokenCallbackTest();
     StrTokenCallbackTest();
     AllCallbackTest();
+    ParseDigit_UINT_MAX_Test();
 
     std::cout << "Success!" << std::endl;
 
@@ -140,4 +142,21 @@ void AllCallbackTest() {
     assert(parser.get_text_after_start_callback() == "{ 10\n2\t\t3\n jjl 0 jl 25ab\n }");
     assert(parser.get_text_after_parse() == "<{> 2 2 3 <jjl> 0 <jl> <25ab> <}>");
     assert(parser.get_text_after_end_callback() == "[ <{> 2 2 3 <jjl> 0 <jl> <25ab> <}> ]");
+}
+
+void ParseDigit_UINT_MAX_Test() {
+    TokenParser parser;
+
+    auto digit_token_callback = [](unsigned int d, std::string& out_str) -> void {
+        out_str = "{";
+        out_str.append(std::to_string(d));
+        out_str.append("}");
+    };
+    parser.SetDigitTokenCallback(digit_token_callback);
+
+    std::string text = "429496729510 t 4294967295";
+    parser.Parse(text, " \t\n");
+
+    assert(parser.get_cnt_tokens() == 3);
+    assert(parser.get_text_after_parse() == "429496729510 t {4294967295}");
 }
