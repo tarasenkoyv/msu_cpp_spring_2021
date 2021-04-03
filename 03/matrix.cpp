@@ -29,6 +29,18 @@ Matrix::Matrix(const Matrix& other) {
 	}
 }
 
+Matrix& Matrix::operator=(const Matrix& other) {
+	cols_ = other.cols_;
+	rows_ = other.rows_;
+
+	data_ = new ProxyRow[rows_];
+	for (size_t i = 0; i < rows_; i++) {
+		data_[i] = *(new ProxyRow(other[i]));
+	}
+
+	return *this;
+}
+
 Matrix::~Matrix() {
 	delete[] data_;
 }
@@ -44,15 +56,32 @@ Matrix Matrix::operator+(const Matrix& other) const {
 	return tmp;
 }
 
-Matrix Matrix::operator*(int x) const {
-	Matrix tmp(rows_, cols_);
-
+Matrix& Matrix::operator+=(const Matrix& other) {
 	for (size_t i = 0; i < rows_; i++) {
 		for (size_t j = 0; j < cols_; j++) {
-			tmp[i][j] = data_[i][j] * x;
+			(*this)[i][j] = (*this)[i][j] + other[i][j];
+		}
+	}
+	return (*this);
+}
+
+Matrix Matrix::operator*(int x) const {
+	Matrix tmp(rows_, cols_);
+	for (size_t i = 0; i < rows_; i++) {
+		for (size_t j = 0; j < cols_; j++) {
+			tmp[i][j] = (*this)[i][j] * x;
 		}
 	}
 	return tmp;
+}
+
+Matrix& Matrix::operator*=(int x) {
+	for (size_t i = 0; i < rows_; i++) {
+		for (size_t j = 0; j < cols_; j++) {
+			(*this)[i][j] = (*this)[i][j] * x;
+		}
+	}
+	return (*this);
 }
 
 bool Matrix::operator!=(const Matrix& other) const {

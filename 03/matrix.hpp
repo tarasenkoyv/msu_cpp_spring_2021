@@ -25,10 +25,13 @@ public:
 	Matrix(const Matrix& other);
 	~Matrix();
 
+	Matrix& operator=(const Matrix& other);
 	Matrix operator+(const Matrix& other) const;
+	Matrix& operator+=(const Matrix& other);
 	bool operator==(const Matrix& other) const;
 	bool operator!=(const Matrix& other) const;
 	Matrix operator*(int x) const;
+	Matrix& operator*=(int x);
 	friend std::ostream& operator<<(std::ostream& ostream, const Matrix& matrix);
 	friend std::ostringstream& operator<<(std::ostringstream& ostream, const Matrix& matrix);
 
