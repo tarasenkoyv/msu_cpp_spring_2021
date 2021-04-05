@@ -10,7 +10,7 @@ test: token_parser_test.o token_parser.o
 	$(CC) $(FLAGS) token_parser_test.o token_parser.o -o token_parser_test
 	./token_parser_test
 
-allocator_test.o: token_parser_test.cpp
+token_parser_test.o: token_parser_test.cpp
 	$(CC) $(FLAGS) token_parser_test.cpp -c
 
 clean:
