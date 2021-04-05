@@ -140,9 +140,9 @@ void ParseDigit_UINT_MAX_Test() {
     };
     parser.SetDigitTokenCallback(digit_token_callback);
 
-    std::string text = "429496729510 t 4294967295";
+    std::string text = std::to_string(UINT_MAX) + "1111 t 42295";
     parser.Parse(text, " \t\n");
 
     assert(parser.get_cnt_tokens() == 3);
-    assert(parser.get_text_after_parse() == "429496729510 t {4294967295}");
+    assert(parser.get_text_after_parse() == std::to_string(UINT_MAX) + "1111 t {42295}");
 }
