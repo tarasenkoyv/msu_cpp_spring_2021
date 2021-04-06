@@ -59,7 +59,8 @@ inline bool TokenParser::IsUnsignedInt(const std::string &token, unsigned int &o
     if (std::regex_match(token, isDigit)) {
         try {
             out_digit = std::stoul(token);
-            if (out_digit <= UINT_MAX) {
+            auto out_digit_str = std::to_string(out_digit);
+            if (out_digit <= UINT_MAX and out_digit_str.size() == token.size()) {
                 return true;
             }
         }

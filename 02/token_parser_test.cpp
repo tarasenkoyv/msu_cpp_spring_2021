@@ -14,12 +14,12 @@ void ParseDigit_UINT_MAX_Test();
 
 int main()
 {
-    CountTokensTest();
-    TextAfterStartCallbackTest();
-    TextAfterEndCallbackTest();
-    DigitTokenCallbackTest();
-    StrTokenCallbackTest();
-    AllCallbackTest();
+    //CountTokensTest();
+    //TextAfterStartCallbackTest();
+    //TextAfterEndCallbackTest();
+    //DigitTokenCallbackTest();
+    //StrTokenCallbackTest();
+    //AllCallbackTest();
     ParseDigit_UINT_MAX_Test();
 
     std::cout << "Success!" << std::endl;
