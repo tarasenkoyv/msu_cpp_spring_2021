@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <regex>
+#include <typeinfo>
 
 TokenParser::TokenParser() {
     digit_token_callback_ = nullptr;
@@ -24,19 +25,23 @@ void TokenParser::Parse(const std::string &text, const std::string &delimiters) 
 
 void TokenParser::ProcessTokens() {
     out_tokens_.clear();
+    out_token_types_.clear();
+
     for (size_t i = 0; i < tokens_.size(); i++) {
         std::string token = tokens_[i];
 
-        unsigned int out_digit;
-        if (IsUnsignedInt(token, out_digit)) {
+        uint64_t out_digit;
+        if (IsDigit(token, out_digit)) {
             std::string out_str = token;
             DigitTokenHandler(out_digit, out_str);
             out_tokens_.push_back(out_str);
+            out_token_types_.push_back(typeid(uint64_t).name());
         }
         else {
             std::string out_str = token;
             StrTokenHandler(token, out_str);
             out_tokens_.push_back(out_str);
+            out_token_types_.push_back(typeid(std::string).name());
         }
     }
 }
@@ -54,15 +59,12 @@ void TokenParser::ReCreateTextAfterParsing() {
     }
 }
 
-inline bool TokenParser::IsUnsignedInt(const std::string &token, unsigned int &out_digit) {
-    std::regex isDigit{ R"(\d+)" };
-    if (std::regex_match(token, isDigit)) {
+inline bool TokenParser::IsDigit(const std::string &token, uint64_t &out_digit) {
+    std::regex is_digit{ R"(\d+)" };
+    if (std::regex_match(token, is_digit)) {
         try {
-            out_digit = std::stoul(token);
-            auto out_digit_str = std::to_string(out_digit);
-            if (out_digit <= UINT_MAX and out_digit_str == token) {
-                return true;
-            }
+            out_digit = std::stoull(token);
+            return true;
         }
         catch (const std::exception &e) {
             return false;
@@ -106,7 +108,7 @@ void TokenParser::SetStrTokenCallback(StrTokenCallback callback) {
     str_token_callback_ = callback;
 }
 
-void TokenParser::DigitTokenHandler(unsigned int digit, std::string &out_str) {
+void TokenParser::DigitTokenHandler(uint64_t digit, std::string &out_str) {
     if (digit_token_callback_ == nullptr) return;
 
     digit_token_callback_(digit, out_str);
@@ -144,6 +146,14 @@ std::string TokenParser::get_text_after_end_callback() const {
 
 size_t TokenParser::get_cnt_tokens() const {
     return tokens_.size();
+}
+
+std::string TokenParser::get_token_type(size_t idx) const {
+    return out_token_types_[idx];
+}
+
+std::string TokenParser::get_token(size_t idx) const {
+    return tokens_[idx];
 }
 
 std::string TokenParser::get_text_after_parse() const {
