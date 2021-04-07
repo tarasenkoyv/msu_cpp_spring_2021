@@ -136,11 +136,11 @@ void TokenParser::EndHandler(const std::string &text, std::string &out_text) {
 }
 
 std::string TokenParser::get_text_after_start_callback() const {
-    return std::string(text_after_start_callback_);
+    return text_after_start_callback_;
 }
 
 std::string TokenParser::get_text_after_end_callback() const {
-    return std::string(text_after_end_callback_);
+    return text_after_end_callback_;
 }
 
 size_t TokenParser::get_cnt_tokens() const {
@@ -156,5 +156,5 @@ std::string TokenParser::get_token(size_t idx) const {
 }
 
 std::string TokenParser::get_text_after_parse() const {
-    return std::string(text_after_parse_);
+    return text_after_parse_;
 }
