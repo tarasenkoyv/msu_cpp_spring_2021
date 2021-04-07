@@ -4,8 +4,6 @@
 #include <functional>
 #include <string>
 #include <vector>
-#include <map> 
-#include <typeinfo>	
 
 using DigitTokenCallback = std::function<void(uint64_t d, std::string &out_str)>;
 using StrTokenCallback = std::function<void(const std::string &str, std::string &out_str)>;

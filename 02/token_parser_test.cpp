@@ -1,7 +1,6 @@
 #include <cassert>
 #include <functional>
 #include <iostream>
-#include <typeinfo>	
 
 #include "token_parser.hpp"
 
@@ -99,7 +98,7 @@ void TextAfterEndCallbackTest() {
 void DigitTokenCallbackTest() {
     TokenParser parser;
 
-    auto digit_token_callback = [](unsigned int d, std::string& out_str) -> void {
+    auto digit_token_callback = [](uint64_t d, std::string& out_str) -> void {
         if (d % 5 == 0) {
             out_str = std::to_string(d / 5);
         }
@@ -134,7 +133,7 @@ void AllCallbackTest() {
     auto str_token_callback = [](const std::string& str, std::string& out_str) -> void {
         out_str = "<" + str + ">";
     };
-    auto digit_token_callback = [](unsigned int d, std::string& out_str) -> void {
+    auto digit_token_callback = [](uint64_t d, std::string& out_str) -> void {
         if (d % 5 == 0) {
             out_str = std::to_string(d / 5);
         }

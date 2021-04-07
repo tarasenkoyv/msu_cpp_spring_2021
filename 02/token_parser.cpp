@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <regex>
-#include <typeinfo>
 
 TokenParser::TokenParser() {
     digit_token_callback_ = nullptr;
