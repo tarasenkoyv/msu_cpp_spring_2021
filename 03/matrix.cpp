@@ -101,7 +101,7 @@ bool Matrix::operator==(const Matrix& other) const {
 
 const ProxyRow& Matrix::operator[](size_t row_idx) const {
 	if (row_idx >= rows_) {
-		throw std::out_of_range("");
+		throw std::out_of_range("Row index is out of range");
 	}
 	return data_[row_idx];
 }
@@ -172,7 +172,7 @@ ProxyRow::~ProxyRow() {
 
 int& ProxyRow::operator[](size_t col_idx) const {
 	if (col_idx >= cols_) {
-		throw std::out_of_range("");
+		throw std::out_of_range("Column index is out of range");
 	}
 	return data_[col_idx];
 }
