@@ -46,12 +46,11 @@ void IncorrectFormatTest() {
 	}
 
 	try {
-		std::string text = "{1" + std::to_string(UINT64_MAX) + "} } test {1}";
+		std::string text = "{1" + std::to_string(std::numeric_limits<size_t>::max()) + "} } test {1}";
 		format(text.c_str(), 4, "test");
 	}
 	catch (const std::exception& e) {
 		assert(typeid(e) == typeid(bad_format_string));
-		assert(std::string(e.what()) == "Incorrect format: pos = 22");
 	}
 }
 
@@ -62,6 +61,15 @@ void InvalidArgumentTest() {
 	catch (const std::exception& e) {
 		assert(typeid(e) == typeid(too_few_args));
 		assert(std::string(e.what()) == "Fewer arguments than specified in the formatted string: number = 3");
+	}
+
+
+	try {
+		std::string text = "{" + std::to_string(std::numeric_limits<size_t>::max()) + "} } test {1}";
+		format(text.c_str(), 4, "test");
+	}
+	catch (const std::exception& e) {
+		assert(typeid(e) == typeid(too_few_args));
 	}
 }
 
