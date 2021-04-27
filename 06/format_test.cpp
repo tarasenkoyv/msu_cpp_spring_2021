@@ -22,6 +22,13 @@ int main()
 
 void IncorrectFormatTest() {
 	try {
+		format("{", 4, 5);
+	}
+	catch (const std::exception& e) {
+		assert(typeid(e) == typeid(bad_format_string));
+	}
+
+	try {
 		format("{-1} any text {1} {0}", 4, 5);
 	}
 	catch (const std::exception &e) {
