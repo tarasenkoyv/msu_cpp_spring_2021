@@ -118,35 +118,19 @@ void ConsistentTest() {
 }
 
 void ForwardIterTest() {
-
-	struct StrOut
-	{
-		void operator()(int n) { 
-			value += std::to_string(n) + " ";
-		}
-		std::string value = "";
-	};
-
+	std::string value;
 	Vector<int> my_vec = { 9, 8, 1, 3, 4, 5, 6 };
-	StrOut str_out = std::for_each(my_vec.begin(), my_vec.end(), StrOut());
+	std::for_each(my_vec.begin(), my_vec.end(), [&value](int x) { value = value + std::to_string(x) + " "; });
 
-	assert(str_out.value == "9 8 1 3 4 5 6 ");
+	assert(value == "9 8 1 3 4 5 6 ");
 }
 
 void ReverseIterTest() {
-
-	struct StrOut
-	{
-		void operator()(int n) {
-			value += std::to_string(n) + " ";
-		}
-		std::string value = "";
-	};
-
+	std::string value;
 	Vector<int> my_vec = { 9, 8, 1, 3, 4, 5, 6 };
-	StrOut str_out = std::for_each(my_vec.rbegin(), my_vec.rend(), StrOut());
+	std::for_each(my_vec.rbegin(), my_vec.rend(), [&value](int x) { value = value + std::to_string(x) + " "; });
 
-	assert(str_out.value == "6 5 4 3 1 8 9 ");
+	assert(value == "6 5 4 3 1 8 9 ");
 }
 
 void InitializeListTest() {
