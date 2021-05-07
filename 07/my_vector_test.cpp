@@ -10,6 +10,7 @@ void ConsistentTest();
 void ForwardIterTest();
 void ReverseIterTest();
 void InitializeListTest();
+void OutOfRangeTest();
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
 	ForwardIterTest();
 	ReverseIterTest();
 	InitializeListTest();
+	OutOfRangeTest();
 
 	std::cout << "Success!" << std::endl;
 
@@ -161,4 +163,16 @@ void InitializeListTest() {
 	assert(my_vec.size() == 7);
 	assert(my_vec.capacity() == 7);
 	assert(!my_vec.empty());
+}
+
+void OutOfRangeTest() {
+	Vector<int> my_vec = { 9, 8, 1 };
+	std::string err;
+	try {
+		my_vec[4];
+	}
+	catch (const std::out_of_range& e) {
+		err = e.what();
+	}
+	assert(err == "Index is out of range");
 }

@@ -47,58 +47,38 @@ public:
 	explicit Iterator(T* ptr, bool rev = false) : ptr_(ptr), rev_f_(rev) {}
 
 	Iterator& operator++() {
-
-		if (rev_f_)
-			--ptr_;
-		else
-			++ptr_;
-
+		rev_f_ ? --ptr_ : ++ptr_;
 		return *this;
 	}
 
 	Iterator operator+(size_t n) const {
-
-		if (rev_f_)
-			return Iterator(ptr_ - n);
-		else
-			return Iterator(ptr_ + n);
+		auto iter = rev_f_ ?  Iterator(ptr_ - n) : Iterator(ptr_ + n);
+		return iter;
 	}
 
-	difference_type operator-(const Iterator<T>& other) const
-	{
+	difference_type operator-(const Iterator<T>& other) const {
 		return std::distance(ptr_, other.ptr_);
 	}
 
 	Iterator operator-(size_t n) const {
-
-		if (rev_f_)
-			return Iterator(ptr_ + n);
-		else
-			return Iterator(ptr_ - n);
+		auto iter =  rev_f_ ? Iterator(ptr_ + n) : Iterator(ptr_ - n);
+		return iter;
 	}
 
 	Iterator& operator--() {
-
-		if (rev_f_)
-			ptr_++;
-		else
-			ptr_--;
-
+		rev_f_ ? ptr_++ : ptr_--;
 		return *this;
 	}
 
 	bool operator==(const Iterator<T>& other) const {
-
 		return ptr_ == other.ptr_;
 	}
 
 	bool operator!=(const Iterator<T>& other) const {
-
 		return !(*this == other);
 	}
 
 	reference operator*() const {
-
 		return *ptr_;
 	}
 
@@ -180,14 +160,14 @@ public:
 
 	const T& operator[](size_t i) const {
 		if (i >= size_) {
-			throw std::out_of_range("Invalid index");
+			throw std::out_of_range("Index is out of range");
 		}
 		return ptr_[i];
 	}
 
 	T& operator[](size_t i) {
 		if (i >= size_) {
-			throw std::out_of_range("Invalid index");
+			throw std::out_of_range("Index is out of range");
 		}
 		return ptr_[i];
 	}
