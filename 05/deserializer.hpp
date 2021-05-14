@@ -4,6 +4,7 @@
 #include <string>
 
 #include "error.hpp"
+#include "serializable_types.hpp"
 
 class Deserializer {
     static const char kSeparator = ' ';
@@ -18,6 +19,7 @@ public:
 private:
     std::istream& in_;
 
+    bool IsEmptyStream();
     Error process(bool& arg);
     Error process(uint64_t& arg);
 

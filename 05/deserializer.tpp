@@ -5,7 +5,15 @@ Deserializer::Deserializer(std::istream& in) : in_(in) {
 template<class... ArgsT>
 Error Deserializer::operator()(ArgsT&... args)
 {
-    return process(args...);
+    Error err = process(args...);
+    if(!IsEmptyStream()) return Error::CorruptedArchive;
+    return err;
+}
+
+bool Deserializer::IsEmptyStream() {
+    std::string object_str;
+    std::getline(in_, object_str);
+    return object_str.empty();
 }
 
 template<class T>
@@ -21,7 +29,7 @@ Error Deserializer::process(uint64_t& object) {
         object = std::stoull(object_str);
         return Error::NoError;
     }
-    catch (const std::exception& e) {
+    catch (...) {
         return Error::CorruptedArchive;
     }
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "error.hpp"
+#include "serializable_types.hpp"
 
 class Serializer {
     static const char kSeparator = ' ';
