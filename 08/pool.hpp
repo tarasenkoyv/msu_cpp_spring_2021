@@ -26,14 +26,16 @@ public:
                     while (!is_destructing_) {
                         std::unique_lock <std::mutex> lock(mutex_);
                         while (!is_destructing_ && tasks_.empty()) {
-                            // Predicate returns false, the method unlocks the mutex
-                            // and goes to sleep until it receives a notification.
+                            // Unlock the mutex
+                            // and go to sleep until it receives a notification.
                             condition_.wait(lock);
                         }
                         
-                        if (is_destructing_ || tasks_.empty()) break;
-                        (tasks_.front())();
+                        if (is_destructing_ ) break;
+                        auto task = tasks_.front();
                         tasks_.pop();
+                        lock.unlock();
+                        task();
                     }
                 }
             );
@@ -54,7 +56,7 @@ public:
     auto exec(Func func, Args... args) -> std::future<decltype(func(args...))> {
         auto task = std::make_shared<std::packaged_task<decltype(func(args...))()>>
             (std::bind(func, args...));
-        std::unique_lock<std::mutex> lock(mutex_);
+        std::lock_guard<std::mutex> lock(mutex_);
         tasks_.push([task]() { (*task)(); });
         condition_.notify_one();
 
