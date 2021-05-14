@@ -10,6 +10,7 @@ void MultiplyTest();
 void SubTest();
 void OutputTest();
 void InEqualityTest();
+void EqualityTest();
 
 int main() {
 
@@ -19,6 +20,7 @@ int main() {
 	SubTest();
 	OutputTest();
 	InEqualityTest();
+	EqualityTest();
 
 	std::cout << "Success!" << std::endl;
 
@@ -120,6 +122,24 @@ void InEqualityTest() {
 
 	a = a + 1;
 	assert(a == b);
+	assert(a != -b);
 	assert(a < -b);
+	assert(a <= -b);
+	assert(-b > a);
+	assert(-b >= a);
+}
 
+void EqualityTest() {
+	BigInt b("01234567890");
+	BigInt a("1234567890");
+	assert(a == b);
+
+	BigInt b1("-1234");
+	BigInt a1("-1235");
+	a1 = a1 + 1;
+	assert(a1 == b1);
+
+	BigInt b2("-012");
+	BigInt a2("-12");
+	assert(a2 == b2);
 }
