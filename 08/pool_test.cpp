@@ -20,7 +20,7 @@ int main() {
 void ExecutionTest() {
     ThreadPool pool(8);
     auto t1 = pool.exec(foo);
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 100; ++i) {
         assert(pool.exec([i]() { return i; }).get() == i);
     }
 

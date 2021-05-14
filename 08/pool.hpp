@@ -32,9 +32,8 @@ public:
                         }
                         
                         if (is_destructing_ || tasks_.empty()) break;
-                        auto task = tasks_.front();
+                        (tasks_.front())();
                         tasks_.pop();
-                        task();
                     }
                 }
             );
