@@ -210,6 +210,7 @@ void SaveLoad_StructWithSingleFieldBoolTest() {
 		std::stringstream stream;
 		Serializer serializer(stream);
 		assert(serializer.Save(data_save) == Error::NoError);
+		assert(stream.str() == "false");
 		Deserializer deserializer(stream);
 		assert(deserializer.Load(data_load) == Error::NoError);
 		assert(data_save.value_ == data_load.value_);
