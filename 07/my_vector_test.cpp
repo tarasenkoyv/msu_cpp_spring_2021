@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "my_vector.hpp"
+#include "data_test.hpp"
 
 
 void ConsistentTest();
@@ -11,6 +12,9 @@ void ForwardIterTest();
 void ReverseIterTest();
 void InitializeListTest();
 void OutOfRangeTest();
+void EmplaceBackTest();
+void ClearTest();
+void ElementChangeTest();
 
 int main()
 {
@@ -19,6 +23,9 @@ int main()
 	ReverseIterTest();
 	InitializeListTest();
 	OutOfRangeTest();
+	EmplaceBackTest();
+	ClearTest();
+	ElementChangeTest();
 
 	std::cout << "Success!" << std::endl;
 
@@ -159,4 +166,97 @@ void OutOfRangeTest() {
 		err = e.what();
 	}
 	assert(err == "Index is out of range");
+}
+
+void EmplaceBackTest()
+{
+	int year = 1994;
+	std::string country = "South Africa";
+	std::string name = "Nelson Mandela";
+
+	Vector<President> my_vec(2);
+
+	{
+		auto& ref = my_vec.emplace_back(name, country, year);
+
+		assert(ref.year == year);
+		assert(ref.country == country);
+		assert(ref.name == name);
+
+		assert(!my_vec.empty());
+		assert(my_vec.size() == 1);
+		assert(my_vec.capacity() == 2);
+	}
+
+
+	{
+		auto& ref = my_vec.emplace_back(name, country, year);
+
+		assert(ref.year == year);
+		assert(ref.country == country);
+		assert(ref.name == name);
+
+		assert(!my_vec.empty());
+		assert(my_vec.size() == 2);
+		assert(my_vec.capacity() == 2);
+	}
+
+	{
+		auto& ref = my_vec.emplace_back(name, country, year);
+
+		assert(ref.year == year);
+		assert(ref.country == country);
+		assert(ref.name == name);
+
+		assert(!my_vec.empty());
+		assert(my_vec.size() == 3);
+		assert(my_vec.capacity() == 3);
+	}
+}
+
+void ClearTest()
+{
+	Vector<int> my_vec;
+	my_vec.push_back(1);
+	my_vec.push_back(2);
+	assert(my_vec.size() == 2);
+	assert(my_vec.capacity() == 2);
+	assert(!my_vec.empty());
+	my_vec.clear();
+	assert(my_vec.size() == 0);
+	assert(my_vec.capacity() == 2);
+	assert(my_vec.empty());
+}
+
+void ElementChangeTest()
+{
+	{
+		Vector<int> my_vec = { 9, 8, 1 };
+		my_vec[0] = 7;
+		assert(my_vec[0] == 7);
+		assert(my_vec[1] == 8);
+		assert(my_vec[2] == 1);
+		assert(my_vec.capacity() == 3);
+		assert(my_vec.size() == 3);
+		assert(!my_vec.empty());
+	}
+
+	{
+		Vector<int> my_vec = { 9, 8, 1 };
+		std::string err;
+		try {
+			my_vec[10] = 11;
+		}
+		catch (const std::out_of_range& e) {
+			err = e.what();
+		}
+		assert(err == "Index is out of range");
+		assert(my_vec[0] == 9);
+		assert(my_vec[1] == 8);
+		assert(my_vec[2] == 1);
+		assert(my_vec.capacity() == 3);
+		assert(my_vec.size() == 3);
+		assert(!my_vec.empty());
+	}
+
 }
